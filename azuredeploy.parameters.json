@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "superBob"
+    },
+    "adminPassword": {
+      "value": "chubbawubba01!"
+    },
+    "dnsPrefix": {
+      "value": "contoso"
+    },
+    "domainName": {
+      "value": "contoso.com"
+    },
+    "location": {
+      "value": "eastus2"
+    }
+  }
+}
