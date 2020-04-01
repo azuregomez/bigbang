@@ -1,4 +1,4 @@
-# Big Bang is a demo setup of for the Milky Way repository
+# Big Bang is a demo setup for the Milky Way repository
 Pre-requisites for Epic stamp
 This template will deploys 
 2 new VMs and create a new  AD forest and domain, each VM will be created as a DC for the new domain and will be placed in separate availability zones.
