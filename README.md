@@ -8,7 +8,7 @@ This template will deploy:
 <li>A Staging storage account for the Milky Way liked templates to be uploaded
  </ul>
 Click the button below to deploy
-
+<br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Factive-directory-new-domain-ha-2-dc-zones%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
