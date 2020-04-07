@@ -80,13 +80,26 @@
                 "description": "AD OU Name."
             },
             "defaultValue": "epicvms"
+    },
+    "ADUserObjectID": {
+          "type": "string",
+          "metadata": {
+            "description": "Object Id of the AD user. Get using Get-AzADUser or Get-AzADServicePrincipal cmdlets"
+          }
+    },
+    "secretsObject": {
+            "type": "secureObject",          
+            "metadata": {
+                "description": "additional secrets {\"secretName\":\"\",\"secretValue\":\"\"} wrapped in a secure object"
+            }
     }
   },
   "variables": {
     "imagePublisher": "MicrosoftWindowsServer",
     "imageOffer": "WindowsServer",
     "imageSKU": "2019-Datacenter",
-    "virtualNetworkName": "msft-ntwk-mgmt",
+    "virtualNetworkName": "epic-hub-vnet",
+    "keyvaultname" : "epic-keyvault",
     "virtualNetworkAddressRange": "172.168.16.0/20",
     "adSubnetName": "adSubnet",
     "adSubnet": "172.168.17.0/25",
@@ -98,6 +111,7 @@
     },
     "vnetTemplateUri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
     "nicTemplateUri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/nic.json', parameters('_artifactsLocationSasToken')))]",
+    "akvTemplateUri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/keyvault.json', parameters('_artifactsLocationSasToken')))]",
     "vmName": [
       "adPDC",
       "adBDC"
@@ -489,6 +503,29 @@
           "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', './' , parameters('_artifactsDirectory'), '/',  variables('ouScriptFileName'), ' ', variables('ouScriptParameters'))]"
         },
         "protectedSettings": {}
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "KeyVault",      
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('akvTemplateUri')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "keyvaultname": {
+            "value": "[variables('keyvaultname')]"
+          },
+          "ADUserObjectID":{
+            "value": "[parameters('ADUserObjectID')]"
+          },
+          "secretsObject":{
+            "value": "[parameters('secretsObject')]"
+          }
+        }
       }
     }
   ]

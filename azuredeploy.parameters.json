@@ -9,13 +9,27 @@
       "value": "chubbawubba01!"
     },
     "dnsPrefix": {
-      "value": "contoso"
+      "value": "contoso0407"
     },
     "domainName": {
       "value": "contoso.com"
     },
     "location": {
       "value": "eastus2"
+    },
+    "ADUserObjectID": {
+      "value": "bdaea4af-b4ea-474e-b69e-f5e982f5df78"      
+    },
+    "secretsObject": {
+        "value": {
+          "secrets" : [
+              { "secretname" : "localAdminUser", "secretvalue" : "superBob" },
+              { "secretname" : "localAdminPassword", "secretvalue" : "chubbawubba01!" },
+              { "secretname" : "linuxSSHKey", "secretvalue" : "ssh-rsa ... your key here ..." },
+              { "secretname" : "domainUser", "secretvalue" : "superBob" },
+              { "secretname" : "domainPassword", "secretvalue" : "chubbawubba01!" }
+          ]
+        }
     }
   }
 }

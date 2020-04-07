@@ -1,0 +1,92 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "keyvaultname":{
+            "type": "string",         
+            "metadata": {
+              "description": "Key Vault Name."
+            }
+        },
+         "vaultSkuName": {
+          "type": "string",
+          "defaultValue": "Standard",
+          "allowedValues": [
+            "Standard",
+            "Premium"
+          ],
+          "metadata": {
+            "description": "SKU for the vault"
+          }
+        },
+        "tenantId": {
+                "type": "string",
+                "defaultValue": "[subscription().tenantId]",
+                "metadata": {
+                    "description": "Tenant Id of the subscription. Get using Get-AzureRmSubscription cmdlet or Get Subscription API"
+                }             
+        },
+        "ADUserObjectID": {
+          "type": "string",
+          "metadata": {
+            "description": "Object Id of the AD user. Get using Get-AzADUser or Get-AzADServicePrincipal cmdlets"
+          }
+        },
+          "secretsObject": {
+            "type": "secureObject",          
+            "metadata": {
+                "description": "additional secrets {\"secretName\":\"\",\"secretValue\":\"\"} wrapped in a secure object"
+            }
+        }
+     },
+    "variables": {
+        "enableVaultForDeployment": true,
+        "enableVaultForDiskEncryption": false,
+        "enableVaultForTemplateDeployment": true
+    },
+    "resources": [
+        {
+        "comments": "Key Vault",
+        "type": "Microsoft.KeyVault/vaults",
+        "name": "[parameters('keyVaultName')]",
+        "apiVersion": "2018-02-14",
+        "location": "[resourceGroup().location]",        
+        "properties": {
+        "enabledForDeployment": "[variables('enableVaultForDeployment')]",
+        "enabledForDiskEncryption": "[variables('enableVaultForDiskEncryption')]",
+        "enabledForTemplateDeployment": "[variables('enableVaultForTemplateDeployment')]",
+        "tenantId": "[parameters('tenantId')]",
+        "accessPolicies": [
+            {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "[parameters('ADUserObjectID')]",
+            "permissions": {
+                "keys": ["all"],
+                "secrets": ["all"]
+            }
+            }
+        ],
+        "sku": {
+            "name": "[parameters('vaultSkuName')]",
+            "family": "A"
+        }       
+        }
+    },    
+    {
+        "comments": "AKV secrets - loop",
+        "type": "Microsoft.KeyVault/vaults/secrets",
+        "name": "[concat(parameters('keyVaultName'), '/', parameters('secretsObject').secrets[copyIndex()].secretName)]",
+        "apiVersion": "2015-06-01",
+        "properties": {
+        "value": "[parameters('secretsObject').secrets[copyIndex()].secretValue]"
+        },
+        "dependsOn": [
+        "[concat('Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+        ],
+        "copy": {
+        "name": "secretsCopy",
+        "count": "[length(parameters('secretsObject').secrets)]"
+        }
+    }
+    ]
+}
