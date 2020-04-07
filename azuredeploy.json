@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
@@ -60,12 +60,26 @@
       },
       "defaultValue": "[deployment().properties.templateLink.uri]"
     },
+    "_artifactsDirectory": {
+            "type": "string",
+            "metadata": {
+                "description": "The directory path on the blob storage container (the path part of the blob name really)."
+            },
+            "defaultValue": "CSE"
+    },
     "_artifactsLocationSasToken": {
       "type": "securestring",
       "metadata": {
         "description": "Auto-generated token to access _artifactsLocation"
       },
       "defaultValue": ""
+    },
+    "organizationalUnitName":{
+        "type" : "string",
+        "metadata": {
+                "description": "AD OU Name."
+            },
+            "defaultValue": "epicvms"
     }
   },
   "variables": {
@@ -132,7 +146,11 @@
     "configureADBDCTemplateUri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configureADBDC.json', parameters('_artifactsLocationSasToken')))]",
     "adBDCConfigurationModulesURL": "[uri(parameters('_artifactsLocation'), 'DSC/ConfigureADBDC.ps1.zip')]",
     "adBDCConfigurationScript": "ConfigureADBDC.ps1",
-    "adBDCConfigurationFunction": "ConfigureADBDC"
+    "adBDCConfigurationFunction": "ConfigureADBDC",    
+    "ouScriptFileName": "CreateOU.ps1",
+    "ouScriptFileUri" : "[uri(parameters('_artifactsLocation'), concat(parameters('_artifactsDirectory'), '/', variables('ouScriptFileName'), parameters('_artifactsLocationSasToken')))]",    
+    "splitdomain": "[split(parameters('domainName'),'.')]",
+    "ouScriptParameters": "[concat(parameters('organizationalUnitName'),' ', variables('splitdomain')[0], ' ', variables('splitdomain')[1])]"
   },
   "resources": [
     {
@@ -449,6 +467,28 @@
             "value": "[parameters('location')]"
           }
         }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "apiVersion": "2019-07-01",
+      "name": "[concat(variables('vmName')[0], '/AddOUCSE')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "vmLoop"
+      ],      
+      "properties": {
+        "publisher": "Microsoft.Compute",
+        "type": "CustomScriptExtension",
+        "typeHandlerVersion": "1.8",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+                       "[variables('ouScriptFileUri')]"
+                      ],
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', './' , parameters('_artifactsDirectory'), '/',  variables('ouScriptFileName'), ' ', variables('ouScriptParameters'))]"
+        },
+        "protectedSettings": {}
       }
     }
   ]
