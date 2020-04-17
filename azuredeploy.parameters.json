@@ -9,7 +9,7 @@
       "value": "chubbawubba01!"
     },
     "dnsPrefix": {
-      "value": "contoso0407"
+      "value": "contoso0416v2"
     },
     "domainName": {
       "value": "contoso.com"
@@ -25,7 +25,7 @@
           "secrets" : [
               { "secretname" : "localAdminUser", "secretvalue" : "superBob" },
               { "secretname" : "localAdminPassword", "secretvalue" : "chubbawubba01!" },
-              { "secretname" : "linuxSSHKey", "secretvalue" : "ssh-rsa ... your key here ..." },
+              { "secretname" : "linuxSSHKey", "secretvalue" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwKgp6dww8GWjVCwWwXQEphdXL1+xyzlw86Q4Zp42jtmtEdzIZgd35pIAJP937Yx12GV2/dVRwHrs9qxiihm8wFSKSZGD6MKyO7BNE+6T/TzLufm5FLPBrYU8G/TfGcM5kwrRG4yh9rPqXALLC5k3HkFanL4gtqE4ltDHubZP4mFj1X8Sg11zYfEJnzVyiLrMPSNmqxBeQwteRsZ3VEfjYvjn5/niTBvSSOwSZEHGdNc0iWVMsru78iDx4CqG4FyMjLN+1NcwTambS1alDT07ZTfAB36aOcQUZuLxbOxhi872fs7BMcD5hrilVQbPmBsFh9smeje2k+qU4GJqr04Tb northamerica\\edgome@MININT-DKDW2DO2" },
               { "secretname" : "domainUser", "secretvalue" : "superBob" },
               { "secretname" : "domainPassword", "secretvalue" : "chubbawubba01!" }
           ]
