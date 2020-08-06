@@ -1,5 +1,4 @@
 # Big Bang is a demo setup for the Milky Way repository
-Pre-requisites for Epic stamp
 This template will deploy:
 <ul>
 <li>A Hub VNet with a Subnet
