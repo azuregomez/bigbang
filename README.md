@@ -1,4 +1,4 @@
-# Big Bang is a demo setup for the Milky Way repository
+# Big Bang is a demo setup for Milky Way
 This template will deploy:
 <ul>
 <li>A Hub VNet with a Subnet
