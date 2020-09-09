@@ -2,7 +2,7 @@
 
 Param(
     [string] [Parameter(Mandatory=$true)] $ResourceGroupLocation,
-    [string] $ResourceGroupName = 'DeployAD',
+    [string] $ResourceGroupName = 'hub-rg',
     [switch] $UploadArtifacts,
     [string] [Parameter(Mandatory=$true)] $StorageAccountName,
     [string] $StorageContainerName = $ResourceGroupName.ToLowerInvariant() + '-stageartifacts',
