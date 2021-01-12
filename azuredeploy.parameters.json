@@ -12,11 +12,8 @@
       "value": "contoso0416v2"
     },
     "domainName": {
-      "value": "contoso.com"
-    },
-    "location": {
-      "value": "eastus2"
-    },
+      "value": "azurelabs.cloud"
+    },    
     "ADUserObjectID": {
       "value": "bdaea4af-b4ea-474e-b69e-f5e982f5df78"      
     },
