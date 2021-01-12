@@ -169,9 +169,12 @@
   "resources": [
     {
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2019-02-01",
+      "apiVersion": "2020-05-01",
       "name": "[variables('publicIPAddressName')]",
       "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard"        
+      },  
       "zones": [
         "1"
       ],
